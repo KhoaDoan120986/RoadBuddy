@@ -193,11 +193,8 @@ def save_checkpoint(model, optimizer, scheduler, epoch, val_acc, best=False, sav
 
 def load_checkpoint(model, optimizer=None, scheduler=None, checkpoint_path="checkpoints/best_checkpoint.pt", device="cuda"):
     checkpoint = torch.load(checkpoint_path, map_location=device)
-    
-    # Load model weights
     model.load_state_dict(checkpoint["model_state_dict"])
     
-    # Load optimizer and scheduler if provided
     if optimizer:
         optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
     if scheduler and checkpoint.get("scheduler_state_dict") is not None:
