@@ -313,9 +313,6 @@ def main():
             if args.local_rank == 0:    
                 val_loss, val_acc = evaluate(model, val_loader, device)
                 current_lr = lr_scheduler.get_last_lr()[0]
-
-                print(f"Epoch [{epoch+1}/{args.num_epochs}] | LR={current_lr:.6f} | "
-                    f"Train Loss={train_loss:.4f} | Val Loss={val_loss:.4f} | Val Acc={val_acc:.4f}")
                 
                 logger.info(f"Epoch [{epoch+1}/{args.num_epochs}] | LR={current_lr:.6f} | "
                             f"Train Loss={train_loss:.4f} | Val Loss={val_loss:.4f} | Val Acc={val_acc:.4f}")
