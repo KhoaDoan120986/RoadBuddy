@@ -168,7 +168,7 @@ def prep_optimizer(model, len_train_iter, args, device):
     lr_scheduler = LambdaLR(optimizer, lr_lambda)
 
     model = torch.nn.parallel.DistributedDataParallel(model.to(device), device_ids=[args.local_rank],
-                                                      output_device=args.local_rank, find_unused_parameters=True)
+                                                      output_device=args.local_rank, find_unused_parameters=False)
 
     return optimizer, lr_scheduler, model
 
@@ -273,9 +273,10 @@ def main():
         )
 
         if args.local_rank == 0:
-            logging.info("Max video tokens: ".format(train_dataset.max_video_tokens))
-            logging.info("Max text tokens: ".format(train_dataset.max_video_tokens))
-            logging.info("Number of train samples: ".format(len(train_dataset)))
+            logging.info(f"Max video tokens: {train_dataset.max_video_tokens}")
+            logging.info(f"Max text tokens: {train_dataset.max_video_tokens}")
+            logging.info(f"Number of train samples: {len(train_dataset)}")
+            
             val_dataset = VideoTextDataset(
                 video_feature_path=args.video_feature_path, 
                 text_feature_path=args.text_feature_path, 
@@ -288,7 +289,7 @@ def main():
                 batch_size=args.batch_size,
                 sampler=val_sampler
             )
-            logging.info("Number of validation samples: ".format(len(val_dataset)))
+            logging.info(f"Number of validation samples: {len(val_dataset)}")
 
         model = VideoQAModel(
             embed_dim=args.model_dim, 
