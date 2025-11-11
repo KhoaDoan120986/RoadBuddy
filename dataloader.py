@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 
 class VideoTextDataset(Dataset):
-    def __init__(self, video_feature_path, text_feature_path, text_metadata_path, max_choices=5):
+    def __init__(self, video_feature_path, text_feature_path, text_metadata_path, max_choices=4):
         self.video_feature_path = video_feature_path
         self.text_feature_path = text_feature_path
         self.text_metadata_path = text_metadata_path
