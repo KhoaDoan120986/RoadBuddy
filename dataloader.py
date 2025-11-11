@@ -36,8 +36,7 @@ class VideoTextDataset(Dataset):
             for key in tqdm(f_text.keys(), desc="Loading text features..."):
                 feat = f_text[key][()] 
                 self.max_text_tokens = max(self.max_text_tokens, feat.shape[1])
-                if key in self.video_ids:
-                    self.text_features[key] = feat
+                self.text_features[key] = feat
 
 
     def __len__(self):
