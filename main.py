@@ -31,7 +31,8 @@ def get_args():
     parser.add_argument('--test_text_metadata_path', type=str, required=True)
     parser.add_argument('--do_train', action='store_true')
     parser.add_argument('--num_epochs', type=int, default=10)
-    parser.add_argument('--batch_size', type=int, default=16)
+    parser.add_argument('--train_batch_size', type=int, default=16)
+    parser.add_argument('--test_batch_size', type=int, default=2)
     parser.add_argument('--learning_rate', type=float, default=1e-4)
     parser.add_argument('--max_choices', type=int, default=5)
     parser.add_argument('--gradient_clip', type=float, default=1.0)
@@ -264,7 +265,7 @@ def main():
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset, shuffle=True)
         train_loader = DataLoader(
             train_dataset,
-            batch_size=args.batch_size,
+            batch_size=args.train_batch_size,
             sampler=train_sampler,
             drop_last=True
         )
@@ -283,7 +284,7 @@ def main():
             val_sampler = SequentialSampler(val_dataset)
             val_loader = DataLoader(
                 val_dataset,
-                batch_size=args.batch_size,
+                batch_size=args.test_batch_size,
                 sampler=val_sampler
             )
             logging.info(f"Number of validation samples: {len(val_dataset)}")
@@ -335,7 +336,7 @@ def main():
         test_sampler = SequentialSampler(test_dataset)
         test_loader = DataLoader(
             test_dataset, 
-            batch_size=args.batch_size,
+            batch_size=args.test_batch_size,
             sampler=test_sampler
         )
         ckpt_path = "checkpoints/best_checkpoint.pt"
